@@ -1,8 +1,8 @@
 import {D3StyleLayoutAdaptor} from './d3v3adaptor'
-import {D3Context, D3v4StyleLayoutAdaptor} from './d3v4adaptor'
+import {D3Context, D3NextStyleLayoutAdaptor} from './d3Nextadaptor'
 import { Layout, EventType, Event } from './layout';
 
-export { D3Context } from './d3v4adaptor';
+export { D3Context } from './d3Nextadaptor';
 
 export interface D3v3Context { version: string };
 
@@ -18,9 +18,9 @@ export interface ID3StyleLayoutAdaptor {
 /**
  * provides an interface for use with d3:
  * Correct way to create way to construct the d3 cola object is to pass the d3 object into the adaptor function, like so:
- * 
+ *
  *   `var d3cola = cola.d3adaptor(d3);`
- * 
+ *
  * Internally, it will figure out if d3 is version 3 or 4 from the version tag and set up the right event forwarding. Defaults to version 3 if the d3 object is not passed.
  * - uses the d3 event system to dispatch layout events such as:
  *   o "start" (start layout process)
@@ -36,7 +36,7 @@ export function d3adaptor(d3Context?: D3Context | D3v3Context): Layout & ID3Styl
     if (!d3Context || isD3V3(d3Context)) {
         return new D3StyleLayoutAdaptor(d3Context);
     }
-    return new D3v4StyleLayoutAdaptor(d3Context);
+    return new D3NextStyleLayoutAdaptor(d3Context);
 }
 
 function isD3V3(d3Context: D3Context | D3v3Context): d3Context is D3v3Context {

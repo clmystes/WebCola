@@ -5,8 +5,8 @@ import {Layout, EventType, Event} from './layout'
 import {ID3StyleLayoutAdaptor} from './d3adaptor'
 
 export interface D3Context {
-    timer: typeof timer; 
-    drag: typeof d3drag; 
+    timer: typeof timer;
+    drag: typeof d3drag;
     dispatch: typeof dispatch;
     event: any;
 }
@@ -14,7 +14,7 @@ export interface D3Context {
 /**
  * @internal
  */
-export class D3v4StyleLayoutAdaptor extends Layout implements ID3StyleLayoutAdaptor {
+export class D3NextStyleLayoutAdaptor extends Layout implements ID3StyleLayoutAdaptor {
     event:any;
     trigger(e: Event) {
         var d3event = { type: EventType[e.type], alpha: e.alpha, stress: e.stress };
@@ -48,12 +48,12 @@ export class D3v4StyleLayoutAdaptor extends Layout implements ID3StyleLayoutAdap
             if (!drag) {
                 var drag = d3Context.drag()
                     .subject(Layout.dragOrigin)
-                    .on("start.d3adaptor", Layout.dragStart)
-                    .on("drag.d3adaptor", d => {
-                        Layout.drag(<any>d, d3Context.event);
+                    .on("start.d3adaptor", (event: any, d: any) => Layout.dragStart(d))
+                    .on("drag.d3adaptor", (event: any, d) => {
+                        Layout.drag(<any>d, event);
                         d3layout.resume(); // restart annealing
                     })
-                    .on("end.d3adaptor", Layout.dragEnd);
+                    .on("end.d3adaptor", (event: any, d) => Layout.dragEnd(d));
             }
 
             if (!arguments.length) return drag;
